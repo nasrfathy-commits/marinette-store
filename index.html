@@ -1378,20 +1378,40 @@ function sendOrder() {
     });
   }
 
+  // Plain '\n' newlines + a single encodeURIComponent at the end: raw newlines
+  // are stripped from URLs, and unencoded &, # or + in names/notes truncate it.
+  // Each item is one block (English name, Arabic name on its own line so the
+  // two scripts never share a bidi line), separated by a blank line.
   let total = 0;
-  let lines = chosen.map(p => {
+  const items = chosen.map((p, i) => {
     const qty = cart[p.id];
     const sub = qty * p.price;
     total += sub;
-    return `- ${p.ar} / ${p.name} × ${qty} = ${sub} EGP`;
-  }).join('\n');
+    return `*${i + 1}. ${p.name}*\n${p.ar}\nQty: ${qty}\nPrice: ${sub} EGP`;
+  }).join('\n\n');
 
+  const SEP = '━━━━━━━━━━━━━━';
   const fulfillmentLines = fulfillment === 'delivery'
-    ? `Order Type: Campus Delivery%0ACampus Location: ${address}`
-    : 'Order Type: Pickup';
+    ? `*🚚 Order Type:* Campus Delivery\n*📍 Campus Location:* ${address}`
+    : '*🚚 Order Type:* Pickup';
 
-  const message = `Hello Marinette,%0AI want to place this order:%0A%0A${lines}%0A%0ATotal = ${total} EGP%0A%0A${fulfillmentLines}%0APayment Method: ${PAYMENT_LABELS[paymentMethod]}%0A%0AName: ${name || '-'}%0APhone: ${phone || '-'}%0ANote: ${note || '-'}`;
-  window.open('https://wa.me/201114535096?text=' + message, '_blank');
+  const message = [
+    '*🛍️ NEW ORDER — MARINETTE*',
+    SEP,
+    '*📦 ORDER ITEMS*',
+    '',
+    items,
+    SEP,
+    `*💰 TOTAL:* ${total} EGP`,
+    SEP,
+    fulfillmentLines,
+    `*💳 Payment Method:* ${PAYMENT_LABELS[paymentMethod]}`,
+    SEP,
+    `*👤 Name:* ${name || '-'}`,
+    `*📞 Phone:* ${phone || '-'}`,
+    `*📝 Notes:* ${note || '-'}`
+  ].join('\n');
+  window.open('https://wa.me/201114535096?text=' + encodeURIComponent(message), '_blank');
 }
 
 
