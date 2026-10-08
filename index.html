@@ -507,6 +507,10 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pd-media .ph-mark{width:132px}
 .pd-media .ph-cat{font-size:.62rem}
 .pd-media::after{content:"";position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(180deg,rgba(250,244,233,0),var(--bg-secondary));pointer-events:none}
+/* Real product photos (transparent cutouts): a shorter fade that blends the
+   media edge into the info panel without washing over the product.
+   The placeholder keeps the original fade above. */
+.pd-media:has(.pimg)::after{height:22%}
 .pd-close{position:absolute;z-index:3;top:calc(10px + env(safe-area-inset-top));left:12px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:rgba(250,244,233,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--text-primary);border:1px solid var(--line);transition:background .25s}
 .pd-close:hover{background:#FFFCF5}
 .pd-close .x{display:none}
@@ -538,6 +542,7 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
   .pd-scroll{flex-direction:row;overflow:hidden}
   .pd-media{flex:0 0 46%;height:auto;min-height:0;max-height:none}
   .pd-media::after{top:0;left:auto;width:35%;height:auto;background:linear-gradient(90deg,rgba(250,244,233,0),var(--bg-secondary))}
+  .pd-media:has(.pimg)::after{width:12%;height:auto}
   .pd-close{left:auto;right:16px;top:16px}
   .pd-close .back{display:none}.pd-close .x{display:block}
   .pd-cart{display:none}
@@ -1014,7 +1019,7 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
    meta        string | null   extra label such as piece count / weight
    ============================================================ */
 const products = [
-  {"id":"tiramisu-italiano","name":"Tiramisu Italiano","ar":"تيراميسو إيطالي","price":85,"category":"Desserts","description":null,"image":null,"featured":2,"meta":null},
+  {"id":"tiramisu-italiano","name":"Tiramisu Italiano","ar":"تيراميسو إيطالي","price":85,"category":"Desserts","description":null,"image":"images/products/marinette-tiramisu-test.webp","featured":2,"meta":null},
   {"id":"molten-cake","name":"Molten Cake","ar":"مولتن كيك","price":90,"category":"Desserts","description":null,"image":null,"featured":1,"meta":null},
   {"id":"creme-brulee","name":"Creme Brulee","ar":"كريم بروليه","price":95,"category":"Desserts","description":null,"image":null,"featured":null,"meta":null},
   {"id":"red-velvet-cake","name":"Red Velvet Cake","ar":"رد فيلفيت كيك","price":75,"category":"Desserts","description":null,"image":null,"featured":null,"meta":null},
