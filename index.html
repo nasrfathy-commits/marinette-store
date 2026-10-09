@@ -423,6 +423,7 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pcard-open{text-align:inherit;font:inherit;color:inherit;cursor:pointer}
 .pcard-ar{margin-top:2px;color:var(--ink-2);font-size:.8rem;line-height:1.5;letter-spacing:0;overflow-wrap:anywhere}
 .pcard-desc{margin-top:4px;color:var(--muted);font-size:.78rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-ing{margin-top:3px;color:var(--muted);font-size:.76rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pcard-meta{margin-top:4px;color:var(--accent-ink);font-size:.72rem;font-weight:600}
 .pcard-flavors{display:flex;align-items:center;gap:7px;margin-top:5px;color:var(--accent-ink);font-size:.8rem;font-weight:600;letter-spacing:.01em;line-height:1.3}
 .pcard-dots{display:inline-flex;flex:none}
@@ -471,7 +472,7 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pcard--tile .pcard-body{flex:1;display:flex;flex-direction:column;padding:10px 12px 12px}
 .pcard--tile .pcard-title{font-size:.86rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pcard--tile .pcard-open{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pcard--tile .pcard-ar,.pcard--tile .pcard-desc,.pcard--tile .pcard-meta{display:none}   /* name + price only, matching the reference card */
+.pcard--tile .pcard-ar,.pcard--tile .pcard-ing,.pcard--tile .pcard-desc,.pcard--tile .pcard-meta{display:none}   /* name + price only, matching the reference card */
 .pcard--tile .pcard-price{font-size:.8rem;font-weight:600;color:var(--text-secondary)}
 .pcard--tile .pcard-flavors{margin-top:3px;font-size:.72rem;gap:6px;white-space:nowrap}
 .pcard--tile .pcard-dots i{width:8px;height:8px}
@@ -541,8 +542,8 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pd-media .pd-layer{opacity:0}
 .pd-media .pd-layer.is-in{opacity:1}
 .pd-media .pimg.is-out{opacity:0}
-.pd-ingredients{padding:var(--s4) 0 var(--s2)}
-.pd-ing-label{margin-bottom:6px;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
+.pd-ingredients{margin-top:var(--s3)}
+.pd-ing-label{margin-bottom:4px;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
 .pd-ing-list{font-size:.9rem;line-height:1.6;color:var(--ink-2);overflow-wrap:anywhere}
 .pd-options{padding:var(--s4) 0;border-bottom:1px solid var(--line)}
 .pd-opt-label{margin-bottom:var(--s3);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
@@ -922,13 +923,13 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
     <div class="pd-media" id="pd-media"></div>
     <div class="pd-info">
       <h2 class="pd-title" id="pd-title"></h2>
-      <p class="pd-desc" id="pd-desc" hidden></p>
-      <p class="pd-meta" id="pd-meta" hidden></p>
-      <div class="pd-price" id="pd-price"></div>
       <div class="pd-ingredients" id="pd-ingredients" hidden>
         <p class="pd-ing-label">Ingredients</p>
         <p class="pd-ing-list" id="pd-ing-list"></p>
       </div>
+      <p class="pd-desc" id="pd-desc" hidden></p>
+      <p class="pd-meta" id="pd-meta" hidden></p>
+      <div class="pd-price" id="pd-price"></div>
       <div class="pd-options" id="pd-options" hidden></div>
       <div class="pd-actions">
         <div class="pd-qty">
@@ -1072,7 +1073,7 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
    description string | null   (not provided yet)
    image       url | null      (not provided yet) — menu card, cart and fallback photo
    detailImage url             optional — photo shown in the product sheet instead of image
-   ingredients string[]        optional — shown in the product sheet as "A · B · C"
+   ingredients string[]        optional — shown under the name (card and product sheet) as "A • B • C"
    featured    null, or 1..n = position in Best Sellers
    meta        string | null   extra label such as piece count / weight
    ============================================================ */
@@ -1093,7 +1094,7 @@ const products = [
   {"id":"tiramisu-cinnamon-roll","name":"Tiramisu Cinnamon Roll","price":90,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/tiramisu-cinnamon-roll.webp","featured":null,"meta":null},
   {"id":"pistachio-cinnamon-roll","name":"Pistachio Cinnamon Roll","price":100,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/pistachio-cinnamon-roll.webp","featured":null,"meta":null},
   {"id":"smoked-turkey-croissant","name":"Smoked Turkey Croissant","price":100,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":"images/products/smoked-turkey-croissant.webp","detailImage":"images/products/smoked-turkey-croissant-detail.webp","ingredients":["Caesar Sauce","Lettuce","Cheddar Cheese","Smoked Turkey"],"featured":null,"meta":null},
-  {"id":"roast-beef-croissant","name":"Roast Beef Croissant","price":110,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"roast-beef-croissant","name":"Roast Beef Croissant","price":110,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":"images/products/roast-beef-croissant.webp","detailImage":"images/products/roast-beef-croissant-detail.webp","ingredients":["Caesar Sauce","Lettuce","Cheddar","Roast Beef"],"featured":null,"meta":null},
   {"id":"kiri-cheese-croissant","name":"Kiri Cheese Croissant","price":90,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":null,"featured":null,"meta":null},
   {"id":"plain-croissant","name":"Plain Croissant","price":50,"category":"Bakery","subcategory":"Sweet Croissants","description":null,"image":null,"featured":null,"meta":null},
   {"id":"almond-croissant","name":"Almond Croissant","price":95,"category":"Bakery","subcategory":"Sweet Croissants","description":null,"image":null,"featured":null,"meta":null},
@@ -1244,6 +1245,7 @@ function money(n) { return 'EGP ' + n; }
    price === null means "Price coming soon" — never shown as 0, null or NaN. */
 const PRICE_PENDING = 'Price coming soon';
 function detailImageOf(p) { return p.detailImage || p.image; }
+function ingredientsText(p) { return p.ingredients && p.ingredients.length ? p.ingredients.join(' • ') : ''; }
 function isPriced(p) { return !!p && typeof p.price === 'number' && isFinite(p.price) && p.price > 0; }
 function priceText(p) { return isPriced(p) ? money(p.price) : PRICE_PENDING; }
 const visibleCategories = categories.filter(c => !c.hidden);
@@ -1293,6 +1295,7 @@ function productCardHTML(p, opts) {
         <div class="pcard-text" data-detail>
           <h3 class="pcard-title"><button class="pcard-open" type="button" data-detail>${esc(title)}</button></h3>
           ${fc ? `<p class="pcard-flavors"><span class="pcard-dots" aria-hidden="true">${fc.swatches.map(c => `<i style="background:${c}"></i>`).join('')}</span>${fc.count} Flavors Available</p>` : ''}
+          ${ingredientsText(p) ? `<p class="pcard-ing">${esc(ingredientsText(p))}</p>` : ''}
           ${p.description ? `<p class="pcard-desc">${esc(p.description)}</p>` : ''}
           ${p.meta ? `<p class="pcard-meta">${esc(p.meta)}</p>` : ''}
         </div>
@@ -1667,9 +1670,9 @@ function pdShow(p) {
   const d = document.getElementById('pd-desc'); d.textContent = p.description || ''; d.hidden = !p.description;
   const m = document.getElementById('pd-meta'); m.textContent = p.meta || ''; m.hidden = !p.meta;
   document.getElementById('pd-price').textContent = priceText(p);
-  const ing = p.ingredients && p.ingredients.length ? p.ingredients : null;
+  const ing = ingredientsText(p);
   document.getElementById('pd-ingredients').hidden = !ing;
-  document.getElementById('pd-ing-list').textContent = ing ? ing.join(' · ') : '';
+  document.getElementById('pd-ing-list').textContent = ing;
 }
 function openProduct(id) {
   const p = products.find(x => x.id === id);
