@@ -523,6 +523,33 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pd-desc{margin-top:var(--s3);color:var(--ink-2);font-size:.95rem;line-height:1.7}
 .pd-meta{margin-top:var(--s3);color:var(--accent-ink);font-size:.85rem;font-weight:600}
 .pd-price{margin-top:var(--s4);padding-bottom:var(--s4);border-bottom:1px solid var(--line);font-family:var(--sans);font-weight:700;font-size:1.3rem;letter-spacing:.01em;color:var(--ink)}
+/* Flavor selector + photo crossfade (products with productOptions) */
+.pd-media.is-contain .pimg{object-fit:contain}
+.pd-media .pimg{transition:opacity .26s ease}
+.pd-media .pd-layer{opacity:0}
+.pd-media .pd-layer.is-in{opacity:1}
+.pd-media .pimg.is-out{opacity:0}
+.pd-options{padding:var(--s4) 0;border-bottom:1px solid var(--line)}
+.pd-opt-label{margin-bottom:var(--s3);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
+.pd-opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:8px}
+.pd-opt{display:flex;align-items:center;gap:9px;min-height:46px;padding:6px 10px;border:1px solid var(--line-2);border-radius:14px;background:transparent;color:var(--ink);text-align:left;transition:border-color .2s,background .2s,box-shadow .2s}
+.pd-opt:hover{border-color:var(--border-gold)}
+.pd-opt[aria-checked="true"]{border-color:var(--brand-green);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--brand-green)}
+.pd-opt:focus-visible{outline:2px solid var(--brand-green);outline-offset:2px}
+.pd-swatch{flex:0 0 14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
+.pd-opt b{display:block;font-size:.86rem;font-weight:700;line-height:1.2}
+.pd-opt small{display:block;margin-top:1px;font-size:.7rem;line-height:1.3;color:var(--muted)}
+.pd-add.is-added{background:var(--brand-green-deep)}
+/* Flavor sheets stay open after adding, so tablet/desktop also get the sheet's cart button (beside the close X). */
+@media (min-width:768px){
+  .pdetail.has-options .pd-cart{display:grid;right:68px;top:16px}
+}
+/* Tablet: the narrow info column stacks the selector 3 rows deep — trim the sheet's
+   vertical padding so title, flavors and Add to Cart fit without scrolling. */
+@media (min-width:768px) and (max-width:1023px){
+  .pdetail.has-options .pd-info{padding-top:var(--s5)}
+  .pdetail.has-options .pd-actions{padding-bottom:var(--s6)}
+}
 .pd-actions{position:sticky;bottom:0;margin:auto calc(var(--s5) * -1) 0;padding:var(--s4) var(--s5) calc(var(--s4) + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(250,244,233,0),var(--bg-secondary) 22%)}
 .pd-qty{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4)}
 .pd-qty>span{font-size:.95rem;font-weight:600;color:var(--ink)}
@@ -883,6 +910,7 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
       <p class="pd-desc" id="pd-desc" hidden></p>
       <p class="pd-meta" id="pd-meta" hidden></p>
       <div class="pd-price" id="pd-price"></div>
+      <div class="pd-options" id="pd-options" hidden></div>
       <div class="pd-actions">
         <div class="pd-qty">
           <span>Quantity</span>
@@ -1043,19 +1071,19 @@ const products = [
   {"id":"chocolate-cinnamon-roll","name":"Chocolate Cinnamon Roll","price":85,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/chocolate-cinnamon-roll.webp","featured":5,"meta":null},
   {"id":"tiramisu-cinnamon-roll","name":"Tiramisu Cinnamon Roll","price":90,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/tiramisu-cinnamon-roll.webp","featured":null,"meta":null},
   {"id":"pistachio-cinnamon-roll","name":"Pistachio Cinnamon Roll","price":100,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/pistachio-cinnamon-roll.webp","featured":null,"meta":null},
-  {"id":"marble-cake-slice","name":"Marble Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"lemon-cake-slice","name":"Lemon Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"chocolate-cake-slice","name":"Chocolate Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"carrot-cake-slice","name":"Carrot Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"apple-cake-slice","name":"Apple Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"classic-new-york-cheesecake","name":"Classic New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":null,"featured":7,"meta":null},
-  {"id":"chocolate-new-york-cheesecake","name":"Chocolate New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"caramel-new-york-cheesecake","name":"Caramel New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"lotus-new-york-cheesecake","name":"Lotus New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"pistachio-new-york-cheesecake","name":"Pistachio New York Cheesecake","price":95,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"caramel-profiterole","name":"Caramel Profiterole","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"chocolate-profiterole","name":"Chocolate Profiterole","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"lotus-profiterole","name":"Lotus Profiterole","price":85,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"marble-cake-slice","name":"Marble Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":"images/products/marble-cake-slice.webp","featured":null,"meta":null},
+  {"id":"lemon-cake-slice","name":"Lemon Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":"images/products/lemon-cake-slice.webp","featured":null,"meta":null},
+  {"id":"chocolate-cake-slice","name":"Chocolate Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":"images/products/chocolate-cake-slice.webp","featured":null,"meta":null},
+  {"id":"carrot-cake-slice","name":"Carrot Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":"images/products/carrot-cake-slice.webp","featured":null,"meta":null},
+  {"id":"apple-cake-slice","name":"Apple Cake Slice","price":40,"category":"Cake Slices","subcategory":"Cake Slices","description":null,"image":"images/products/apple-cake-slice.webp","featured":null,"meta":null},
+  {"id":"classic-new-york-cheesecake","name":"Classic New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":"images/products/classic-new-york-cheesecake.webp","featured":7,"meta":null},
+  {"id":"chocolate-new-york-cheesecake","name":"Chocolate New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":"images/products/chocolate-new-york-cheesecake.webp","featured":null,"meta":null,"variantOf":"classic-new-york-cheesecake"},
+  {"id":"caramel-new-york-cheesecake","name":"Caramel New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":"images/products/caramel-new-york-cheesecake.webp","featured":null,"meta":null,"variantOf":"classic-new-york-cheesecake"},
+  {"id":"lotus-new-york-cheesecake","name":"Lotus New York Cheesecake","price":85,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":"images/products/lotus-new-york-cheesecake.webp","featured":null,"meta":null,"variantOf":"classic-new-york-cheesecake"},
+  {"id":"pistachio-new-york-cheesecake","name":"Pistachio New York Cheesecake","price":95,"category":"Pâtisserie","subcategory":"New York Cheesecake","description":null,"image":"images/products/pistachio-new-york-cheesecake.webp","featured":null,"meta":null,"variantOf":"classic-new-york-cheesecake"},
+  {"id":"caramel-profiterole","name":"Caramel Profiterole","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":"images/products/caramel-profiterole.webp","featured":null,"meta":null},
+  {"id":"chocolate-profiterole","name":"Chocolate Profiterole","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":"images/products/chocolate-profiterole.webp","featured":null,"meta":null},
+  {"id":"lotus-profiterole","name":"Lotus Profiterole","price":85,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":"images/products/lotus-profiterole.webp","featured":null,"meta":null},
   {"id":"mango-tres-leches","name":"Mango Tres Leches","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":null,"featured":null,"meta":null},
   {"id":"chocolate-tres-leches","name":"Chocolate Tres Leches","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":null,"featured":null,"meta":null},
   {"id":"caramel-tres-leches","name":"Caramel Tres Leches","price":80,"category":"Pâtisserie","subcategory":"Dessert Cups","description":null,"image":null,"featured":null,"meta":null},
@@ -1121,6 +1149,27 @@ const categories = [
   /* The Coffee Bar replaces Frozen. Shown with "Coming Soon" until coffee products are added. */
   {"id":"coffee-bar","category":"The Coffee Bar","label":"The Coffee Bar","kicker":"The Coffee Bar","subcategories":["Hot Coffee","Iced Coffee","Blended Coffee"],"hidden":false,"image":null,"imageAlt":null}
 ];
+
+/* Flavor options. The base product gets one menu card; each option points at an
+   existing product record, so price, image and cart line all come from that record.
+   Records with "variantOf" are hidden from the menu and reached only via this selector. */
+const productOptions = {
+  'classic-new-york-cheesecake': {
+    label: 'Choose Your Flavor',
+    options: [
+      { id: 'classic-new-york-cheesecake', flavor: 'Classic', note: 'No Sauce', swatch: '#F1E3BF' },
+      { id: 'chocolate-new-york-cheesecake', flavor: 'Chocolate', note: 'Chocolate Sauce', swatch: '#4B2A1D' },
+      { id: 'caramel-new-york-cheesecake', flavor: 'Caramel', note: 'Caramel Sauce', swatch: '#C97A2C' },
+      { id: 'lotus-new-york-cheesecake', flavor: 'Lotus', note: 'Lotus Sauce', swatch: '#A2643A' },
+      { id: 'pistachio-new-york-cheesecake', flavor: 'Pistachio', note: 'Pistachio Sauce', swatch: '#8FA53A' }
+    ]
+  }
+};
+function isListed(p) { return !p.variantOf; }
+function baseOf(p) { return (p && p.variantOf && products.find(x => x.id === p.variantOf)) || p; }
+function optionsOf(p) { return productOptions[baseOf(p).id] || null; }
+function flavorOf(p) { const set = optionsOf(p); return (set && set.options.find(o => o.id === p.id)) || null; }
+function flavorText(o) { return o.flavor + ' — ' + o.note; }
 
 /* ---------- Icons (presentation only) ---------- */
 const ICONS = {
@@ -1194,7 +1243,7 @@ function productCardHTML(p, opts) {
 }
 
 function categoryHTML(c, idx) {
-  const items = products.filter(p => p.category === c.category);
+  const items = products.filter(p => p.category === c.category && isListed(p));
   const kicker = c.kicker || c.label;
   const count = items.length ? items.length + (items.length === 1 ? ' item' : ' items') : '';
   const banner = c.image
@@ -1219,7 +1268,7 @@ function categoryHTML(c, idx) {
 function renderMenu() {
   // Best Sellers: set product.featured = 1..10 to fill it. With no featured
   // products the section, its header link and its nav chips stay hidden.
-  const best = products.filter(p => p.featured).sort((a, b) => a.featured - b.featured);
+  const best = products.filter(p => p.featured && isListed(p)).sort((a, b) => a.featured - b.featured);
   const hasBest = best.length > 0;
   document.getElementById('best-list').innerHTML = best.map((p, i) => productCardHTML(p, { variant: 'tile', idPrefix: 'best-qty-', index: i, reveal: true })).join('');
   document.getElementById('bestsellers').hidden = !hasBest;
@@ -1286,7 +1335,7 @@ function renderCart() {
       row.innerHTML = `
         <div>
           <strong>${esc(p.name)}</strong>
-          <small>${esc(categoryLabel(p.category))}</small>
+          <small>${esc(flavorOf(p) ? 'Flavor: ' + flavorText(flavorOf(p)) : categoryLabel(p.category))}</small>
           <div class="cart-row-controls">
             <button class="qty-btn" onclick="changeQty('${p.id}', -1)">-</button>
             <span class="qty-num">${qty}</span>
@@ -1408,7 +1457,8 @@ function sendOrder() {
     const qty = cart[p.id];
     const sub = qty * p.price;
     total += sub;
-    return `*${i + 1}. ${p.name}*\nQty: ${qty}\nPrice: ${sub} EGP`;
+    const f = flavorOf(p);
+    return `*${i + 1}. ${p.name}*\n${f ? `Flavor: ${flavorText(f)}\n` : ''}Qty: ${qty}\nPrice: ${sub} EGP`;
   }).join('\n\n');
 
   const SEP = '━━━━━━━━━━━━━━';
@@ -1536,21 +1586,42 @@ function pdRefresh() {
   document.getElementById('pd-qty').textContent = pdQty;
   document.querySelector('#pdetail .pd-qty').hidden = !priced;
   const add = document.getElementById('pd-add');
+  if (add.dataset.busy) return; // "Added to Cart" confirmation still showing
   add.disabled = !priced;
   add.innerHTML = priced
     ? `Add to Cart <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg> ${money(p.price * pdQty)}`
     : PRICE_PENDING;
 }
-function openProduct(id) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
-  pdId = id; pdQty = 1;
-  document.getElementById('pd-media').innerHTML = mediaHTML(p);
+/* Fills the sheet's text for product p (shared by openProduct and flavor changes). */
+function pdShow(p) {
   document.getElementById('pd-title').textContent = p.name;
   const d = document.getElementById('pd-desc'); d.textContent = p.description || ''; d.hidden = !p.description;
   const m = document.getElementById('pd-meta'); m.textContent = p.meta || ''; m.hidden = !p.meta;
   document.getElementById('pd-price').textContent = priceText(p);
-  pdRefresh();
+}
+function openProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  pdId = id; pdQty = 1;
+  const set = optionsOf(p);
+  const media = document.getElementById('pd-media');
+  media.innerHTML = mediaHTML(p);
+  media.classList.toggle('is-contain', !!set);
+  document.getElementById('pdetail').classList.toggle('has-options', !!set);
+  pdShow(p);
+  const box = document.getElementById('pd-options');
+  box.hidden = !set;
+  box.innerHTML = set ? `
+    <p class="pd-opt-label" id="pd-opt-label">${esc(set.label)}</p>
+    <div class="pd-opt-grid" role="radiogroup" aria-labelledby="pd-opt-label">${set.options.map(o => `
+      <button class="pd-opt" type="button" role="radio" aria-checked="${o.id === id}" data-opt="${o.id}" onclick="pdSelect('${o.id}')">
+        <i class="pd-swatch" style="background:${o.swatch}" aria-hidden="true"></i>
+        <span><b>${esc(o.flavor)}</b><small>${esc(o.note)}</small></span>
+      </button>`).join('')}
+    </div>` : '';
+  // Warm the cache so switching flavors crossfades without waiting on the network.
+  if (set) set.options.forEach(o => { const q = products.find(x => x.id === o.id); if (q && q.image) new Image().src = q.image; });
+  pdAddReset(); // clears any leftover "Added" state, then paints the button
   document.getElementById('pdetail').classList.add('open');
   document.getElementById('pd-backdrop').classList.add('show');
 }
@@ -1558,12 +1629,60 @@ function closeProduct() {
   document.getElementById('pdetail').classList.remove('open');
   document.getElementById('pd-backdrop').classList.remove('show');
 }
+/* Flavor change: the sheet now sells that option's own record (its price, image, cart line).
+   Quantity is kept. The new photo is decoded first, then crossfades over the old one. */
+let pdSwap = 0;
+function pdSelect(id) {
+  const p = products.find(x => x.id === id);
+  if (!p || id === pdId) return;
+  pdId = id;
+  pdShow(p);
+  document.querySelectorAll('#pd-options .pd-opt').forEach(b => b.setAttribute('aria-checked', b.dataset.opt === id ? 'true' : 'false'));
+  pdAddReset(); // a new flavor can be added right away
+  const media = document.getElementById('pd-media');
+  const token = ++pdSwap;
+  const img = new Image();
+  img.className = 'pimg pd-layer'; img.alt = p.name; img.src = p.image;
+  const show = () => {
+    if (token !== pdSwap || pdId !== id) return;
+    const old = [...media.querySelectorAll('.pimg')];
+    media.appendChild(img);
+    img.getBoundingClientRect(); // commit opacity:0 so the fade-in transitions
+    img.classList.add('is-in');
+    old.forEach(o => o.classList.add('is-out'));
+    setTimeout(() => old.forEach(o => o.remove()), 300);
+  };
+  img.decode().then(show, show);
+}
 function pdStep(delta) { pdQty = Math.min(99, Math.max(1, pdQty + delta)); pdRefresh(); }
 function pdAdd() {
-  if (!pdId || !isPriced(products.find(x => x.id === pdId))) return;
+  const p = products.find(x => x.id === pdId);
+  if (!pdId || !isPriced(p)) return;
+  const add = document.getElementById('pd-add');
+  if (add.dataset.busy) return; // ignore a double-tap on the same selection
   changeQty(pdId, pdQty);
+  if (optionsOf(p)) {
+    // Flavor sheets stay open so several flavors can be added in one visit.
+    // The button confirms in place; quantity goes back to 1, the flavor stays selected.
+    pdQty = 1;
+    add.dataset.busy = '1';
+    add.classList.add('is-added');
+    add.innerHTML = `Added to Cart <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
+    document.getElementById('pd-qty').textContent = pdQty;
+    clearTimeout(pdAddTimer);
+    pdAddTimer = setTimeout(pdAddReset, 1200);
+    return;
+  }
   closeProduct();
   showToast('Added to cart');
+}
+let pdAddTimer;
+function pdAddReset() {
+  clearTimeout(pdAddTimer);
+  const add = document.getElementById('pd-add');
+  delete add.dataset.busy;
+  add.classList.remove('is-added');
+  pdRefresh();
 }
 
 let toastTimer;
@@ -1588,7 +1707,8 @@ function runSearch(raw) {
   document.getElementById('search-clear').hidden = !raw;
   if (!q) { browse.hidden = false; res.hidden = true; res.innerHTML = ''; return; }
   const hidden = new Set(categories.filter(c => c.hidden).map(c => c.category));
-  const hits = products.filter(p => !hidden.has(p.category) && [p.name, categoryLabel(p.category), p.subcategory || '', p.meta || '', p.description || ''].some(s => fold(s).includes(q)));
+  // A matching flavor variant surfaces its base product's card (e.g. "pistachio" → the cheesecake card).
+  const hits = [...new Set(products.filter(p => !hidden.has(p.category) && [p.name, categoryLabel(p.category), p.subcategory || '', p.meta || '', p.description || ''].some(s => fold(s).includes(q))).map(baseOf))];
   browse.hidden = true; res.hidden = false;
   res.innerHTML = `<div class="results-head"><h2>Search</h2><p>${hits.length} result${hits.length === 1 ? '' : 's'} for “${esc(raw.trim())}”</p></div>` +
     (hits.length ? `<div class="plist">${hits.map(p => productCardHTML(p, { variant: 'row' })).join('')}</div>` : '<p class="no-results">No matching items.</p>');
