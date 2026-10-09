@@ -367,6 +367,15 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .soon{margin-top:var(--s4);padding:var(--s7) var(--s5);text-align:center;border:1px dashed var(--border-gold);border-radius:var(--r-lg);background:var(--surface)}
 .soon b{display:block;font-family:var(--serif);font-weight:500;font-size:1.7rem;letter-spacing:.04em;color:var(--display)}
 .soon span{display:block;margin-top:var(--s2);color:var(--muted)}
+.subtabs{display:flex;gap:8px;margin:0 calc(var(--gutter) * -1) var(--s5);padding:2px var(--gutter);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-inline:var(--gutter)}
+.subtabs::-webkit-scrollbar{display:none}
+.subtab{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:0 16px;border:1px solid var(--line-2);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font-size:.86rem;font-weight:600;white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
+.subtab small{font-size:.7rem;font-weight:700;color:var(--muted)}
+.subtab:hover{border-color:var(--border-gold)}
+.subtab[aria-selected="true"]{background:var(--brand-green);border-color:var(--brand-green);color:var(--brand-cream)}
+.subtab[aria-selected="true"] small{color:var(--brand-cream);opacity:.75}
+.subtab:focus-visible{outline:2px solid var(--brand-green);outline-offset:2px}
+@media (min-width:1024px){.subtabs{flex-wrap:wrap;margin-inline:0;padding-inline:0;overflow:visible}}
 
 /* ---------- 6b. Campus Ordering ---------- */
 .campus-head{max-width:620px}
@@ -1157,13 +1166,44 @@ const products = [
   {"id":"red-bull-original","name":"Red Bull Original","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-original.webp","featured":null,"meta":null},
   {"id":"red-bull-peach","name":"Red Bull Peach","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-peach.webp","featured":null,"meta":null},
   {"id":"red-bull-sugar-free","name":"Red Bull Sugar Free","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-sugar-free.webp","featured":null,"meta":null},
-  {"id":"water","name":"Water","price":15,"category":"Soft Drinks","subcategory":"Water","description":null,"image":"images/products/water.webp","featured":null,"meta":null}
+  {"id":"water","name":"Water","price":15,"category":"Soft Drinks","subcategory":"Water","description":null,"image":"images/products/water.webp","featured":null,"meta":null},
+  /* The Coffee Bar — imported from Marinette_Coffee_Bar_Menu_No_Prices.xlsx (27 drinks).
+     Prices are intentionally null ("Price coming soon", cannot be ordered): set "price" to activate a drink.
+     image null = Marinette placeholder; set it to a photo URL when one is ready. */
+  {"id":"espresso","name":"Espresso","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"double-espresso","name":"Double Espresso","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"espresso-macchiato","name":"Espresso Macchiato","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"americano","name":"Americano","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"irish-coffee","name":"Irish Coffee","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"cortado","name":"Cortado","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"flat-white","name":"Flat White","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"cappuccino","name":"Cappuccino","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"latte","name":"Latte","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"caffe-mocha","name":"Caffè Mocha","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"spanish-latte","name":"Spanish Latte","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"macadamia-praline","name":"Macadamia Praline","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-latte","name":"Iced Latte","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-spanish-latte","name":"Iced Spanish Latte","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-americano","name":"Iced Americano","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-mocha","name":"Iced Mocha","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-macadamia","name":"Iced Macadamia","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"mango-smoothie","name":"Mango Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"peach-smoothie","name":"Peach Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"mixed-berry-smoothie","name":"Mixed Berry Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"strawberry-smoothie","name":"Strawberry Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"english-breakfast-tea","name":"English Breakfast Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"earl-grey-tea","name":"Earl Grey Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"green-tea","name":"Green Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"hot-matcha","name":"Hot Matcha","price":null,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"hot-apple-cider","name":"Hot Apple Cider","price":null,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"mojito","name":"Mojito","price":null,"category":"The Coffee Bar","subcategory":"Mojitos","description":null,"image":null,"featured":null,"meta":null}
 ];
 
 /* Category sections, in display order.
    category  matches product.category     label   nav chip + section title
    kicker    small subtitle (optional)     subcategories  internal grouping (not navigation)
    hidden    true = kept in the data but not shown in navigation or menu sections
+   subheads  true = each subcategory under its own heading; subtabs  true = one subcategory at a time, picked from tabs
    image     optional nav chip photo (+ imageAlt), also the banner when no banner is set; without one a premium placeholder is shown.
    banner    optional section banner, 4.4:1 (1920x436); bannerMobile 2.6:1 (1290x496) for phones; bannerAlt its alt text.
    A visible category with no products shows "Coming Soon". */
@@ -1175,8 +1215,8 @@ const categories = [
   {"id":"cookies","category":"Cookies","label":"Cookies","kicker":"Cookies","subcategories":["Cookies & Brownies"],"hidden":false,"image":null,"imageAlt":null},
   {"id":"sandwiches","category":"Sandwiches","label":"Sandwiches","kicker":"Sandwiches","subcategories":["Sandwiches"],"hidden":false,"image":null,"imageAlt":null},
   {"id":"soft-drinks","category":"Soft Drinks","label":"Soft Drinks","kicker":"Soft Drinks","subcategories":["Pepsi","Cola","Energy Drinks","Water"],"hidden":false,"image":null,"imageAlt":null},
-  /* The Coffee Bar replaces Frozen. Shown with "Coming Soon" until coffee products are added. */
-  {"id":"coffee-bar","category":"The Coffee Bar","label":"The Coffee Bar","kicker":"The Coffee Bar","subcategories":["Hot Coffee","Iced Coffee","Blended Coffee"],"hidden":false,"image":null,"imageAlt":null}
+  /* The Coffee Bar replaces Frozen. Subcategories show as tabs; Blended Coffee is reserved and stays hidden until it has products. */
+  {"id":"coffee-bar","category":"The Coffee Bar","label":"The Coffee Bar","kicker":"The Coffee Bar","subcategories":["Hot Coffee","Iced Coffee","Smoothies","Tea","Specialty Hot Drinks","Mojitos","Blended Coffee"],"subtabs":true,"hidden":false,"image":null,"imageAlt":null}
 ];
 
 /* Flavor options. The base product gets one menu card; each option points at an
@@ -1317,8 +1357,9 @@ function categoryHTML(c, idx) {
     : '';
   const list = ps => `<div class="plist">${ps.map((p, i) => productCardHTML(p, { variant: 'row', idPrefix: 'qty-', index: i })).join('')}</div>`;
   // Categories with "subheads" show each subcategory under its own heading, in the subcategories order.
-  const groups = c.subheads ? c.subcategories.map(s => [s, items.filter(p => p.subcategory === s)]).filter(g => g[1].length) : null;
+  const groups = (c.subheads || c.subtabs) ? c.subcategories.map(s => [s, items.filter(p => p.subcategory === s)]).filter(g => g[1].length) : null;
   const body = !items.length ? '<div class="soon"><b>Coming Soon</b></div>'
+    : c.subtabs ? subtabsHTML(c, groups, list)
     : groups ? groups.map(([s, ps]) => `
         <div class="subgroup">
           <h3 class="subhead reveal"><span>${esc(s)}</span><small>${ps.length} ${ps.length === 1 ? 'item' : 'items'}</small></h3>
@@ -1362,6 +1403,29 @@ function renderMenu() {
 }
 
 const cart = {};
+
+/* Subcategory tabs (categories with "subtabs"): only subcategories that have products get a tab. */
+function subtabsHTML(c, groups, list) {
+  return `
+        <div class="subtabs" role="tablist" aria-label="${esc(c.label)} categories">${groups.map(([s, ps], i) => `
+          <button class="subtab" type="button" role="tab" id="${c.id}-tab-${i}" aria-controls="${c.id}-panel-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" onclick="selectSubtab('${c.id}', ${i})" onkeydown="subtabKey(event, '${c.id}', ${i}, ${groups.length})">${esc(s)}<small>${ps.length}</small></button>`).join('')}
+        </div>${groups.map(([s, ps], i) => `
+        <div class="subpanel" role="tabpanel" id="${c.id}-panel-${i}" aria-labelledby="${c.id}-tab-${i}"${i ? ' hidden' : ''}>${list(ps)}</div>`).join('')}`;
+}
+function selectSubtab(catId, i) {
+  const sec = document.getElementById(catId);
+  sec.querySelectorAll('.subtab').forEach((t, k) => { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; });
+  sec.querySelectorAll('.subpanel').forEach((p, k) => { p.hidden = k !== i; });
+  const tab = document.getElementById(catId + '-tab-' + i);
+  tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  return tab;
+}
+function subtabKey(e, catId, i, n) {
+  const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+  if (!k) return;
+  e.preventDefault();
+  selectSubtab(catId, (i + k + n) % n).focus();
+}
 
 function changeQty(id, delta) {
   // Only real, priced products can enter the cart (blocks unpriced items
