@@ -541,6 +541,9 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pd-media .pd-layer{opacity:0}
 .pd-media .pd-layer.is-in{opacity:1}
 .pd-media .pimg.is-out{opacity:0}
+.pd-ingredients{padding:var(--s4) 0 var(--s2)}
+.pd-ing-label{margin-bottom:6px;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
+.pd-ing-list{font-size:.9rem;line-height:1.6;color:var(--ink-2);overflow-wrap:anywhere}
 .pd-options{padding:var(--s4) 0;border-bottom:1px solid var(--line)}
 .pd-opt-label{margin-bottom:var(--s3);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
 .pd-opt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:8px}
@@ -922,6 +925,10 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
       <p class="pd-desc" id="pd-desc" hidden></p>
       <p class="pd-meta" id="pd-meta" hidden></p>
       <div class="pd-price" id="pd-price"></div>
+      <div class="pd-ingredients" id="pd-ingredients" hidden>
+        <p class="pd-ing-label">Ingredients</p>
+        <p class="pd-ing-list" id="pd-ing-list"></p>
+      </div>
       <div class="pd-options" id="pd-options" hidden></div>
       <div class="pd-actions">
         <div class="pd-qty">
@@ -1063,7 +1070,9 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
    category    must match a "category" in the categories list below
    subcategory internal grouping from the Excel file (not shown as navigation)
    description string | null   (not provided yet)
-   image       url | null      (not provided yet)
+   image       url | null      (not provided yet) — menu card, cart and fallback photo
+   detailImage url             optional — photo shown in the product sheet instead of image
+   ingredients string[]        optional — shown in the product sheet as "A · B · C"
    featured    null, or 1..n = position in Best Sellers
    meta        string | null   extra label such as piece count / weight
    ============================================================ */
@@ -1083,7 +1092,7 @@ const products = [
   {"id":"chocolate-cinnamon-roll","name":"Chocolate Cinnamon Roll","price":85,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/chocolate-cinnamon-roll.webp","featured":5,"meta":null},
   {"id":"tiramisu-cinnamon-roll","name":"Tiramisu Cinnamon Roll","price":90,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/tiramisu-cinnamon-roll.webp","featured":null,"meta":null},
   {"id":"pistachio-cinnamon-roll","name":"Pistachio Cinnamon Roll","price":100,"category":"Bakery","subcategory":"Cinnamon Rolls","description":null,"image":"images/products/pistachio-cinnamon-roll.webp","featured":null,"meta":null},
-  {"id":"smoked-turkey-croissant","name":"Smoked Turkey Croissant","price":100,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"smoked-turkey-croissant","name":"Smoked Turkey Croissant","price":100,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":"images/products/smoked-turkey-croissant.webp","detailImage":"images/products/smoked-turkey-croissant-detail.webp","ingredients":["Caesar Sauce","Lettuce","Cheddar Cheese","Smoked Turkey"],"featured":null,"meta":null},
   {"id":"roast-beef-croissant","name":"Roast Beef Croissant","price":110,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":null,"featured":null,"meta":null},
   {"id":"kiri-cheese-croissant","name":"Kiri Cheese Croissant","price":90,"category":"Bakery","subcategory":"Savory Croissants","description":null,"image":null,"featured":null,"meta":null},
   {"id":"plain-croissant","name":"Plain Croissant","price":50,"category":"Bakery","subcategory":"Sweet Croissants","description":null,"image":null,"featured":null,"meta":null},
@@ -1234,6 +1243,7 @@ function money(n) { return 'EGP ' + n; }
 /* A product can only be ordered when it has a real numeric price (> 0).
    price === null means "Price coming soon" — never shown as 0, null or NaN. */
 const PRICE_PENDING = 'Price coming soon';
+function detailImageOf(p) { return p.detailImage || p.image; }
 function isPriced(p) { return !!p && typeof p.price === 'number' && isFinite(p.price) && p.price > 0; }
 function priceText(p) { return isPriced(p) ? money(p.price) : PRICE_PENDING; }
 const visibleCategories = categories.filter(c => !c.hidden);
@@ -1244,9 +1254,10 @@ function categoryLabel(key) {
 
 /* Product image. product.image === null -> premium placeholder.
    Adding a real photo later only means setting product.image (a URL). */
-function mediaHTML(p) {
-  return p.image
-    ? `<img class="pimg" src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`
+function mediaHTML(p, src) {
+  src = src || p.image;
+  return src
+    ? `<img class="pimg" src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`
     : `<div class="ph" aria-hidden="true"><span class="ph-mark">M</span><span class="ph-cat">${esc(categoryLabel(p.category))}</span></div>`;
 }
 
@@ -1656,6 +1667,9 @@ function pdShow(p) {
   const d = document.getElementById('pd-desc'); d.textContent = p.description || ''; d.hidden = !p.description;
   const m = document.getElementById('pd-meta'); m.textContent = p.meta || ''; m.hidden = !p.meta;
   document.getElementById('pd-price').textContent = priceText(p);
+  const ing = p.ingredients && p.ingredients.length ? p.ingredients : null;
+  document.getElementById('pd-ingredients').hidden = !ing;
+  document.getElementById('pd-ing-list').textContent = ing ? ing.join(' · ') : '';
 }
 function openProduct(id) {
   const p = products.find(x => x.id === id);
@@ -1663,7 +1677,7 @@ function openProduct(id) {
   pdId = id; pdQty = 1;
   const set = optionsOf(p);
   const media = document.getElementById('pd-media');
-  media.innerHTML = mediaHTML(p);
+  media.innerHTML = mediaHTML(p, detailImageOf(p));
   media.classList.toggle('is-contain', !!set);
   document.getElementById('pdetail').classList.toggle('has-options', !!set);
   pdShow(p);
@@ -1678,7 +1692,7 @@ function openProduct(id) {
       </button>`).join('')}
     </div>` : '';
   // Warm the cache so switching flavors crossfades without waiting on the network.
-  if (set) set.options.forEach(o => { const q = products.find(x => x.id === o.id); if (q && q.image) new Image().src = q.image; });
+  if (set) set.options.forEach(o => { const q = products.find(x => x.id === o.id); if (q && detailImageOf(q)) new Image().src = detailImageOf(q); });
   pdAddReset(); // clears any leftover "Added" state, then paints the button
   document.getElementById('pdetail').classList.add('open');
   document.getElementById('pd-backdrop').classList.add('show');
@@ -1700,7 +1714,7 @@ function pdSelect(id) {
   const media = document.getElementById('pd-media');
   const token = ++pdSwap;
   const img = new Image();
-  img.className = 'pimg pd-layer'; img.alt = p.name; img.src = p.image;
+  img.className = 'pimg pd-layer'; img.alt = p.name; img.src = detailImageOf(p);
   const show = () => {
     if (token !== pdSwap || pdId !== id) return;
     const old = [...media.querySelectorAll('.pimg')];
