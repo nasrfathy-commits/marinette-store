@@ -419,6 +419,10 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pcard-ar{margin-top:2px;color:var(--ink-2);font-size:.8rem;line-height:1.5;letter-spacing:0;overflow-wrap:anywhere}
 .pcard-desc{margin-top:4px;color:var(--muted);font-size:.78rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pcard-meta{margin-top:4px;color:var(--accent-ink);font-size:.72rem;font-weight:600}
+.pcard-flavors{display:flex;align-items:center;gap:7px;margin-top:5px;color:var(--accent-ink);font-size:.8rem;font-weight:600;letter-spacing:.01em;line-height:1.3}
+.pcard-dots{display:inline-flex;flex:none}
+.pcard-dots i{width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 1.5px var(--surface,#fff),inset 0 0 0 1px rgba(0,0,0,.12)}
+.pcard-dots i+i{margin-left:-3px}
 .pcard-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);margin-top:var(--s3)}
 .pcard-price{font-weight:700;font-size:.92rem;color:var(--ink);letter-spacing:.01em;white-space:nowrap}
 .pcard-text{cursor:pointer}
@@ -464,6 +468,9 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .pcard--tile .pcard-open{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pcard--tile .pcard-ar,.pcard--tile .pcard-desc,.pcard--tile .pcard-meta{display:none}   /* name + price only, matching the reference card */
 .pcard--tile .pcard-price{font-size:.8rem;font-weight:600;color:var(--text-secondary)}
+.pcard--tile .pcard-flavors{margin-top:3px;font-size:.72rem;gap:6px;white-space:nowrap}
+.pcard--tile .pcard-dots i{width:8px;height:8px}
+@media (max-width:420px){.pcard--tile .pcard-dots{display:none}}   /* narrow phone tiles: text only, so the line never clips */
 .pcard--tile .pcard-foot{margin-top:auto;padding-top:8px}
 .pcard--tile .add{height:30px}
 .pcard--tile .add .qty-btn{width:30px;height:30px}
@@ -1155,6 +1162,7 @@ const categories = [
    Records with "variantOf" are hidden from the menu and reached only via this selector. */
 const productOptions = {
   'classic-new-york-cheesecake': {
+    title: 'New York Cheesecake',
     label: 'Choose Your Flavor',
     options: [
       { id: 'classic-new-york-cheesecake', flavor: 'Classic', note: 'No Sauce', swatch: '#F1E3BF' },
@@ -1165,6 +1173,7 @@ const productOptions = {
     ]
   },
   'mango-tres-leches': {
+    title: 'Tres Leches',
     label: 'Choose Your Flavor',
     options: [
       { id: 'mango-tres-leches', flavor: 'Mango', swatch: '#F2A922' },
@@ -1180,6 +1189,13 @@ function isListed(p) { return !p.variantOf; }
 function baseOf(p) { return (p && p.variantOf && products.find(x => x.id === p.variantOf)) || p; }
 function optionsOf(p) { return productOptions[baseOf(p).id] || null; }
 function flavorOf(p) { const set = optionsOf(p); return (set && set.options.find(o => o.id === p.id)) || null; }
+// Menu card for a product with flavors: shared title, flavor count and the lowest real flavor price.
+function flavorCard(p) {
+  const set = productOptions[p.id];
+  if (!set) return null;
+  const prices = set.options.map(o => products.find(x => x.id === o.id)).filter(isPriced).map(x => x.price);
+  return { title: set.title || p.name, count: set.options.length, swatches: set.options.map(o => o.swatch), from: prices.length ? Math.min(...prices) : null };
+}
 function flavorText(o) { return o.note ? o.flavor + ' — ' + o.note : o.flavor; }
 
 /* ---------- Icons (presentation only) ---------- */
@@ -1232,22 +1248,34 @@ function addControlHTML(p, idPrefix) {
     </div>`;
 }
 
+// Flavor cards: "+" opens the flavor picker instead of adding a default flavor.
+function chooseControlHTML(p, title) {
+  return `<div class="add" data-has="0" dir="ltr">
+      <button class="qty-btn plus" type="button" aria-label="Choose a flavor of ${esc(title)}" onclick="openProduct('${p.id}')">+</button>
+    </div>`;
+}
+
 /* ONE product card for every category. variant: 'tile' (Best Sellers) | 'row' (lists, search) */
 function productCardHTML(p, opts) {
   opts = opts || {};
   const variant = opts.variant || 'row';
+  const fc = flavorCard(p);
+  const title = fc ? fc.title : p.name;
+  const price = fc ? (fc.from !== null ? 'From ' + money(fc.from) : PRICE_PENDING) : priceText(p);
+  const priced = fc ? fc.from !== null : isPriced(p);
   return `
     <article class="pcard pcard--${variant}${opts.reveal ? ' reveal' : ''}" data-product-id="${p.id}" style="--i:${(opts.index || 0) % 4}">
       <div class="pcard-media" data-detail>${mediaHTML(p)}</div>
       <div class="pcard-body">
         <div class="pcard-text" data-detail>
-          <h3 class="pcard-title"><button class="pcard-open" type="button" data-detail>${esc(p.name)}</button></h3>
+          <h3 class="pcard-title"><button class="pcard-open" type="button" data-detail>${esc(title)}</button></h3>
+          ${fc ? `<p class="pcard-flavors"><span class="pcard-dots" aria-hidden="true">${fc.swatches.map(c => `<i style="background:${c}"></i>`).join('')}</span>${fc.count} Flavors Available</p>` : ''}
           ${p.description ? `<p class="pcard-desc">${esc(p.description)}</p>` : ''}
           ${p.meta ? `<p class="pcard-meta">${esc(p.meta)}</p>` : ''}
         </div>
         <div class="pcard-foot">
-          <span class="pcard-price${isPriced(p) ? '' : ' is-pending'}">${esc(priceText(p))}</span>
-          ${isPriced(p) ? addControlHTML(p, opts.idPrefix) : ''}
+          <span class="pcard-price${priced ? '' : ' is-pending'}">${esc(price)}</span>
+          ${!priced ? '' : fc ? chooseControlHTML(p, title) : addControlHTML(p, opts.idPrefix)}
         </div>
       </div>
     </article>`;
