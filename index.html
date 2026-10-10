@@ -387,6 +387,9 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .campus-ico{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--bg-sunken);color:var(--brand-green-deep)}
 .campus-ico svg{width:24px;height:24px}
 .campus-card h3{margin-top:var(--s4);font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--display)}
+.campus-card.is-soon{border-style:dashed}
+.campus-card.is-soon .campus-ico{opacity:.55}
+.campus-card h3 .soon-badge{vertical-align:middle;margin-inline-start:6px}
 .campus-card p{margin-top:6px;color:var(--ink-2);font-size:.92rem;line-height:1.55}
 @media (hover:hover){.campus-card:hover{border-color:var(--border-gold);transform:translateY(-3px)}}
 @media (min-width:768px){
@@ -649,6 +652,9 @@ svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stro
 .fulfillment-btn.is-active{border-color:var(--brand-green);background:rgba(184,201,166,.18)}
 .fulfillment-btn.is-active .fulfillment-ico{background:var(--brand-green);color:var(--brand-cream)}
 .fulfillment-btn.is-active .fulfillment-check{opacity:1;transform:scale(1)}
+.fulfillment-btn.is-soon,.fulfillment-btn.is-soon:hover{cursor:not-allowed;border-style:dashed;border-color:var(--line);background:var(--bg-sunken)}
+.fulfillment-btn.is-soon .fulfillment-ico,.fulfillment-btn.is-soon .fulfillment-text{opacity:.55}
+.soon-badge{flex:0 0 auto;font-family:var(--sans);padding:4px 10px;border:1px solid var(--border-gold);border-radius:var(--r-pill);background:rgba(201,166,106,.14);color:var(--text-secondary);font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 #location-field{margin-top:var(--s3)}
 .pickup-note{margin-top:var(--s3);padding:12px 14px;background:rgba(201,166,106,.14);border:1px solid var(--border-gold);border-radius:var(--r-md);color:var(--text-secondary);font-size:.86rem;font-weight:600}
 .form-grid{display:grid;gap:var(--s2)}
@@ -860,7 +866,7 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
   </div>
 
   <div class="hero-footer-bar">
-    <p class="hero-service">Campus Delivery · Pickup · Ready Notifications</p>
+    <p class="hero-service">Pickup from Kiosk · Ready Notifications · Campus Delivery Coming Soon</p>
   </div>
 </section>
 
@@ -887,18 +893,18 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
       <div class="campus-head reveal">
         <span class="kicker">Campus Ordering</span>
         <h2>Your break.<br>Your order.<br>Your way.</h2>
-        <p class="campus-sub">In class? At the library? Between lectures?<br>Order Marinette from wherever you are on campus.</p>
+        <p class="campus-sub">In class? At the library? Between lectures?<br>Order ahead and pick it up from our kiosk.</p>
       </div>
       <div class="campus-options">
         <div class="campus-card reveal">
-          <span class="campus-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21c4-4.5 7-8 7-11a7 7 0 0 0-14 0c0 3 3 6.5 7 11z"/></svg></span>
-          <h3>Bring it to me</h3>
-          <p>Stay where you are.<br>We'll come to you.</p>
-        </div>
-        <div class="campus-card reveal">
           <span class="campus-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><circle cx="18" cy="6" r="4"/><path d="M16.3 6l1.1 1.1L19.7 4.7"/></svg></span>
-          <h3>I'll pick it up</h3>
-          <p>We'll have it ready — and let you know when it is.</p>
+          <h3>Pickup from Kiosk</h3>
+          <p>Available now. We'll have it ready — and let you know when it is.</p>
+        </div>
+        <div class="campus-card is-soon reveal">
+          <span class="campus-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21c4-4.5 7-8 7-11a7 7 0 0 0-14 0c0 3 3 6.5 7 11z"/></svg></span>
+          <h3>Campus Delivery <span class="soon-badge">Coming Soon</span></h3>
+          <p>Not available yet — we'll announce it here when it is.</p>
         </div>
       </div>
     </section>
@@ -913,7 +919,7 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer ltr">
   <span class="logo-plate"><span class="brand-logo" role="img" aria-label="Marinette French Bakery"></span></span>
-  <a class="pay" href="https://wa.me/201114535096?text=Hello%20Marinette%20%E2%80%94%20I%20want%20to%20pay%20via%20InstaPay" target="_blank" rel="noopener">Pay via InstaPay</a>
+  <a class="pay" href="https://wa.me/201149964723?text=Hello%20Marinette%20%E2%80%94%20I%20want%20to%20pay%20via%20InstaPay" target="_blank" rel="noopener">Pay via InstaPay</a>
   <small>MARINETTE FRENCH BAKERY</small>
 </footer>
 
@@ -974,15 +980,15 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
     <div class="fulfillment" dir="ltr" role="radiogroup" aria-label="How would you like your order?">
       <span class="field-label">How would you like your order?</span>
       <div class="fulfillment-options">
-        <button type="button" class="fulfillment-btn is-active" id="fulfill-delivery" role="radio" aria-checked="true" onclick="setFulfillment('delivery')">
-          <span class="fulfillment-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21c4-4.5 7-8 7-11a7 7 0 0 0-14 0c0 3 3 6.5 7 11z"/></svg></span>
-          <span class="fulfillment-text"><b>Bring it to me</b><small>Stay where you are. We'll come to you.</small></span>
+        <button type="button" class="fulfillment-btn is-active" id="fulfill-pickup" role="radio" aria-checked="true" onclick="setFulfillment('pickup')">
+          <span class="fulfillment-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><circle cx="18" cy="6" r="4"/><path d="M16.3 6l1.1 1.1L19.7 4.7"/></svg></span>
+          <span class="fulfillment-text"><b>Pickup from Kiosk</b><small>Available now. We'll have it ready — and let you know when it is.</small></span>
           <svg class="fulfillment-check i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
         </button>
-        <button type="button" class="fulfillment-btn" id="fulfill-pickup" role="radio" aria-checked="false" onclick="setFulfillment('pickup')">
-          <span class="fulfillment-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><circle cx="18" cy="6" r="4"/><path d="M16.3 6l1.1 1.1L19.7 4.7"/></svg></span>
-          <span class="fulfillment-text"><b>Pick it up</b><small>We'll have it ready — and let you know when it is.</small></span>
-          <svg class="fulfillment-check i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        <button type="button" class="fulfillment-btn is-soon" id="fulfill-delivery" role="radio" aria-checked="false" aria-disabled="true" disabled tabindex="-1">
+          <span class="fulfillment-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21c4-4.5 7-8 7-11a7 7 0 0 0-14 0c0 3 3 6.5 7 11z"/></svg></span>
+          <span class="fulfillment-text"><b>Campus Delivery</b><small>Not available yet.</small></span>
+          <span class="soon-badge">Coming Soon</span>
         </button>
       </div>
     </div>
@@ -1009,13 +1015,13 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
             <svg class="i pay-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="pay-menu" id="pay-menu" role="menu" hidden>
-            <button type="button" role="menuitemradio" aria-checked="false" data-pay="cash" onclick="setPayment('cash')">Cash on Delivery</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-pay="cash" onclick="setPayment('cash')">Cash on Pickup</button>
             <button type="button" role="menuitemradio" aria-checked="false" data-pay="instapay" onclick="setPayment('instapay')">InstaPay</button>
           </div>
         </div>
       </div>
       <p class="pay-error" id="pay-error" role="alert" hidden>Please choose a payment method.</p>
-      <div class="pay-instapay" id="pay-instapay" hidden><a class="pay-link" href="https://wa.me/201114535096?text=Hello%20Marinette%20%E2%80%94%20I%20want%20to%20pay%20via%20InstaPay" target="_blank" rel="noopener" aria-label="Pay via InstaPay on WhatsApp"><span class="pay-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M13 3L5 13.500h6L10 21l8-10.500h-6z"/></svg></span>InstaPay <span class="pay-arr" aria-hidden="true">↗</span></a></div>
+      <div class="pay-instapay" id="pay-instapay" hidden><a class="pay-link" href="https://wa.me/201149964723?text=Hello%20Marinette%20%E2%80%94%20I%20want%20to%20pay%20via%20InstaPay" target="_blank" rel="noopener" aria-label="Pay via InstaPay on WhatsApp"><span class="pay-ico" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M13 3L5 13.500h6L10 21l8-10.500h-6z"/></svg></span>InstaPay <span class="pay-arr" aria-hidden="true">↗</span></a></div>
     </div>
     <div class="ship-note" id="ship-note">We'll confirm delivery details after you send your order.</div>
   </div>
@@ -1041,7 +1047,7 @@ html[lang="ar"] .total-box span:first-child{font-family:var(--sans);font-size:1.
     <div class="sheet-label">Browse the menu</div>
     <div class="sheet-links" id="sheet-links"></div>
     <div class="sheet-info">
-      <a href="https://wa.me/201114535096?text=Hello%20Marinette%20%E2%80%94%20I%20want%20to%20pay%20via%20InstaPay" target="_blank" rel="noopener"><span>Payment</span><span>InstaPay ↗</span></a>
+      <a href="https://wa.me/201149964723?text=Hello%20Marinette%20%E2%80%94%20I%20want%20to%20pay%20via%20InstaPay" target="_blank" rel="noopener"><span>Payment</span><span>InstaPay ↗</span></a>
     </div>
   </div>
 </div>
@@ -1162,31 +1168,36 @@ const products = [
   {"id":"pepsi","name":"Pepsi","price":25,"category":"Soft Drinks","subcategory":"Pepsi","description":null,"image":"images/products/pepsi.webp","featured":null,"meta":null},
   {"id":"diet-pepsi","name":"Diet Pepsi","price":25,"category":"Soft Drinks","subcategory":"Pepsi","description":null,"image":"images/products/diet-pepsi.webp","featured":null,"meta":null},
   {"id":"coca-cola","name":"Coca-Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":"images/products/coca-cola.webp","featured":null,"meta":null},
+  {"id":"diet-coca-cola","name":"Diet Coca-Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":null,"featured":null,"meta":null},
   {"id":"v-cola","name":"V Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":"images/products/v-cola.webp","featured":null,"meta":null},
+  {"id":"v7","name":"V7","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"v7-diet","name":"V7 Diet","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":null,"featured":null,"meta":null},
   {"id":"red-bull-original","name":"Red Bull Original","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-original.webp","featured":null,"meta":null},
   {"id":"red-bull-peach","name":"Red Bull Peach","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-peach.webp","featured":null,"meta":null},
   {"id":"red-bull-sugar-free","name":"Red Bull Sugar Free","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-sugar-free.webp","featured":null,"meta":null},
   {"id":"water","name":"Water","price":15,"category":"Soft Drinks","subcategory":"Water","description":null,"image":"images/products/water.webp","featured":null,"meta":null},
-  /* The Coffee Bar — imported from Marinette_Coffee_Bar_Menu_No_Prices.xlsx (27 drinks).
-     Prices are intentionally null ("Price coming soon", cannot be ordered): set "price" to activate a drink.
+  /* The Coffee Bar — imported from Marinette_Coffee_Bar_Menu_No_Prices.xlsx (27 drinks); prices added 2026-10-10.
+     price null = "Price coming soon" (cannot be ordered): set "price" to activate a drink.
      image null = Marinette placeholder; set it to a photo URL when one is ready. */
-  {"id":"espresso","name":"Espresso","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"espresso","name":"Espresso","price":80,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"double-espresso","name":"Double Espresso","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"espresso-macchiato","name":"Espresso Macchiato","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"americano","name":"Americano","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"irish-coffee","name":"Irish Coffee","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"cortado","name":"Cortado","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"flat-white","name":"Flat White","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"cappuccino","name":"Cappuccino","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"latte","name":"Latte","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"caffe-mocha","name":"Caffè Mocha","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"spanish-latte","name":"Spanish Latte","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"macadamia-praline","name":"Macadamia Praline","price":null,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"iced-latte","name":"Iced Latte","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"iced-spanish-latte","name":"Iced Spanish Latte","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"iced-americano","name":"Iced Americano","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"iced-mocha","name":"Iced Mocha","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"iced-macadamia","name":"Iced Macadamia","price":null,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"espresso-macchiato","name":"Espresso Macchiato","price":90,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"americano","name":"Americano","price":100,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"irish-coffee","name":"Irish Coffee","price":100,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"cortado","name":"Cortado","price":90,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"flat-white","name":"Flat White","price":110,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"cappuccino","name":"Cappuccino","price":100,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"latte","name":"Latte","price":110,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"caffe-mocha","name":"Caffè Mocha","price":120,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"spanish-latte","name":"Spanish Latte","price":130,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"macadamia-praline","name":"Macadamia Praline","price":140,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"turkish-coffee","name":"Turkish Coffee","price":30,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-latte","name":"Iced Latte","price":120,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-spanish-latte","name":"Iced Spanish Latte","price":140,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-americano","name":"Iced Americano","price":90,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-mocha","name":"Iced Mocha","price":140,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-macadamia","name":"Iced Macadamia","price":150,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"iced-matcha","name":"Iced Matcha","price":140,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"mango-smoothie","name":"Mango Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
   {"id":"peach-smoothie","name":"Peach Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
   {"id":"mixed-berry-smoothie","name":"Mixed Berry Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
@@ -1196,6 +1207,8 @@ const products = [
   {"id":"green-tea","name":"Green Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
   {"id":"hot-matcha","name":"Hot Matcha","price":null,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
   {"id":"hot-apple-cider","name":"Hot Apple Cider","price":null,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"hot-dark-chocolate","name":"Hot Dark Chocolate","price":100,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"hot-white-chocolate","name":"Hot White Chocolate","price":100,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
   {"id":"mojito","name":"Mojito","price":null,"category":"The Coffee Bar","subcategory":"Mojitos","description":null,"image":null,"featured":null,"meta":null}
 ];
 
@@ -1510,8 +1523,14 @@ function clearCart() {
    no order status, no notification system — just the UX/data the later
    phases (predefined campus locations, ready-for-pickup alerts, prep time)
    will plug into without reshaping the checkout. */
-let fulfillment = 'delivery';
+/* Campus delivery is not live yet: the option stays visible as "Coming Soon"
+   but can't be chosen, and any 'delivery' request (stale state, a forced
+   click) falls back to kiosk pickup. Flip to true when delivery launches
+   (and re-enable the #fulfill-delivery button). */
+const DELIVERY_ENABLED = false;
+let fulfillment = 'pickup';
 function setFulfillment(type) {
+  if (type !== 'pickup' && !(type === 'delivery' && DELIVERY_ENABLED)) type = 'pickup';
   fulfillment = type;
   const isDelivery = type === 'delivery';
   const d = document.getElementById('fulfill-delivery'), p = document.getElementById('fulfill-pickup');
@@ -1525,7 +1544,7 @@ function setFulfillment(type) {
 /* Payment method — required before the WhatsApp confirmation. InstaPay
    reveals the existing InstaPay WhatsApp link; cash shows nothing extra. */
 let paymentMethod = null;
-const PAYMENT_LABELS = { cash: 'Cash on Delivery', instapay: 'InstaPay' };
+const PAYMENT_LABELS = { cash: 'Cash on Pickup', instapay: 'InstaPay' };
 function togglePayMenu(force) {
   const menu = document.getElementById('pay-menu');
   const open = typeof force === 'boolean' ? force : menu.hidden;
@@ -1556,11 +1575,20 @@ document.getElementById('pay-select').addEventListener('keydown', e => {
   }
 });
 
+/* Every customer order goes to this WhatsApp number (Egypt 01149964723,
+   international format without + or leading 0, as wa.me requires). */
+const ORDER_WHATSAPP = '201149964723';
+function orderWhatsAppUrl(message) {
+  return 'https://wa.me/' + ORDER_WHATSAPP + '?text=' + encodeURIComponent(message);
+}
+
 function sendOrder() {
   const name = document.getElementById('customer-name').value.trim();
   const phone = document.getElementById('customer-phone').value.trim();
   const address = document.getElementById('customer-address').value.trim();
   const note = document.getElementById('customer-note').value.trim();
+
+  if (fulfillment === 'delivery' && !DELIVERY_ENABLED) setFulfillment('pickup');
 
   const chosen = products.filter(p => cart[p.id] && isPriced(p));
   if (chosen.length === 0) {
@@ -1601,7 +1629,7 @@ function sendOrder() {
   const SEP = '━━━━━━━━━━━━━━';
   const fulfillmentLines = fulfillment === 'delivery'
     ? `*🚚 Order Type:* Campus Delivery\n*📍 Campus Location:* ${address}`
-    : '*🚚 Order Type:* Pickup';
+    : '*🚚 Order Type:* Pickup from Kiosk';
 
   const message = [
     '*🛍️ NEW ORDER — MARINETTE*',
@@ -1619,14 +1647,14 @@ function sendOrder() {
     `*📞 Phone:* ${phone || '-'}`,
     `*📝 Notes:* ${note || '-'}`
   ].join('\n');
-  window.open('https://wa.me/201114535096?text=' + encodeURIComponent(message), '_blank');
+  window.open(orderWhatsAppUrl(message), '_blank');
 }
 
 
 
 renderMenu();
 renderCart();
-setFulfillment('delivery');
+setFulfillment('pickup');
 
 /* ---------- Hero carousel (Bakery / Sandwiches / Pâtisserie) ---------- */
 (function heroCarousel() {
