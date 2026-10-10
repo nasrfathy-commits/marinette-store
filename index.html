@@ -1203,9 +1203,9 @@ const products = [
   {"id":"pepsi","name":"Pepsi","price":25,"category":"Soft Drinks","subcategory":"Pepsi","description":null,"image":"images/products/pepsi.webp","featured":null,"meta":null},
   {"id":"diet-pepsi","name":"Diet Pepsi","price":25,"category":"Soft Drinks","subcategory":"Pepsi","description":null,"image":"images/products/diet-pepsi.webp","featured":null,"meta":null},
   {"id":"coca-cola","name":"Coca-Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":"images/products/coca-cola.webp","featured":null,"meta":null},
-  {"id":"diet-coca-cola","name":"Diet Coca-Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"diet-coca-cola","name":"Diet Coca-Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":"images/products/diet-coca-cola.webp","featured":null,"meta":null},
   {"id":"v-cola","name":"V Cola","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":"images/products/v-cola.webp","featured":null,"meta":null},
-  {"id":"v-cola-diet","name":"V Cola Diet","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"v-cola-diet","name":"V Cola Diet","price":25,"category":"Soft Drinks","subcategory":"Cola","description":null,"image":"images/products/v-cola-diet.webp","featured":null,"meta":null},
   {"id":"red-bull-original","name":"Red Bull Original","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-original.webp","featured":null,"meta":null},
   {"id":"red-bull-peach","name":"Red Bull Peach","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-peach.webp","featured":null,"meta":null},
   {"id":"red-bull-sugar-free","name":"Red Bull Sugar Free","price":80,"category":"Soft Drinks","subcategory":"Energy Drinks","description":null,"image":"images/products/red-bull-sugar-free.webp","featured":null,"meta":null},
@@ -1225,7 +1225,8 @@ const products = [
   {"id":"caffe-mocha","name":"Caffè Mocha","price":120,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"spanish-latte","name":"Spanish Latte","price":130,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"macadamia-praline","name":"Macadamia Praline","price":140,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"turkish-coffee","name":"Turkish Coffee","price":30,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"turkish-coffee","name":"Turkish Coffee","price":35,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"double-turkish-coffee","name":"Double Turkish Coffee","price":45,"category":"The Coffee Bar","subcategory":"Hot Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"iced-latte","name":"Iced Latte","price":120,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"iced-spanish-latte","name":"Iced Spanish Latte","price":140,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
   {"id":"iced-americano","name":"Iced Americano","price":90,"category":"The Coffee Bar","subcategory":"Iced Coffee","description":null,"image":null,"featured":null,"meta":null},
@@ -1236,9 +1237,9 @@ const products = [
   {"id":"peach-smoothie","name":"Peach Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
   {"id":"mixed-berry-smoothie","name":"Mixed Berry Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
   {"id":"strawberry-smoothie","name":"Strawberry Smoothie","price":null,"category":"The Coffee Bar","subcategory":"Smoothies","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"english-breakfast-tea","name":"English Breakfast Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"earl-grey-tea","name":"Earl Grey Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
-  {"id":"green-tea","name":"Green Tea","price":null,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"english-breakfast-tea","name":"English Breakfast Tea","price":25,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"earl-grey-tea","name":"Earl Grey Tea","price":30,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
+  {"id":"green-tea","name":"Green Tea","price":25,"category":"The Coffee Bar","subcategory":"Tea","description":null,"image":null,"featured":null,"meta":null},
   {"id":"hot-matcha","name":"Hot Matcha","price":null,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
   {"id":"hot-apple-cider","name":"Hot Apple Cider","price":null,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
   {"id":"hot-dark-chocolate","name":"Hot Dark Chocolate","price":100,"category":"The Coffee Bar","subcategory":"Specialty Hot Drinks","description":null,"image":null,"featured":null,"meta":null},
@@ -1255,15 +1256,15 @@ const products = [
    banner    optional section banner, 4.4:1 (1920x436); bannerMobile 2.6:1 (1290x496) for phones; bannerAlt its alt text.
    A visible category with no products shows "Coming Soon". */
 const categories = [
-  {"id":"desserts","category":"Pâtisserie","label":"Pâtisserie","kicker":"Pâtisserie","subcategories":["New York Cheesecake","Dessert Cups","Mille-Feuille","Tarts","Paris-Brest"],"hidden":false,"image":null,"imageAlt":null},
-  {"id":"cake-slices","category":"Cake Slices","label":"Cake Slices","kicker":"Cake Slices","subcategories":["Cake Slices"],"hidden":false,"image":null,"imageAlt":null},
+  {"id":"desserts","category":"Pâtisserie","label":"Pâtisserie","kicker":"Pâtisserie","subcategories":["New York Cheesecake","Dessert Cups","Mille-Feuille","Tarts","Paris-Brest"],"hidden":false,"image":"images/nav/desserts.webp","imageAlt":null},
+  {"id":"cake-slices","category":"Cake Slices","label":"Cake Slices","kicker":"Cake Slices","subcategories":["Cake Slices"],"hidden":false,"image":"images/nav/cake-slices.webp","imageAlt":null},
   {"id":"bakery","category":"Bakery","label":"Bakery","kicker":"Bakery","subcategories":["Cinnamon Rolls","Savory Croissants","Sweet Croissants"],"subheads":true,"hidden":false,"image":"images/nav/bakery.webp","imageAlt":"Bakery bread","banner":"images/bakery-banner-desktop.webp","bannerMobile":"images/bakery-banner-mobile.webp","bannerAlt":"Powdered-sugar croissant on marble"},
-  {"id":"rice-omali","category":"Rice & Om Ali","label":"Rice & Om Ali","kicker":"Rice & Om Ali","subcategories":["Rice Pudding","Tajin"],"hidden":false,"image":null,"imageAlt":null},
-  {"id":"cookies","category":"Cookies","label":"Cookies","kicker":"Cookies","subcategories":["Cookies & Brownies"],"hidden":false,"image":null,"imageAlt":null},
-  {"id":"sandwiches","category":"Sandwiches","label":"Sandwiches","kicker":"Sandwiches","subcategories":["Sandwiches"],"hidden":false,"image":null,"imageAlt":null},
-  {"id":"soft-drinks","category":"Soft Drinks","label":"Soft Drinks","kicker":"Soft Drinks","subcategories":["Pepsi","Cola","Energy Drinks","Water"],"hidden":false,"image":null,"imageAlt":null},
+  {"id":"rice-omali","category":"Rice & Om Ali","label":"Rice & Om Ali","kicker":"Rice & Om Ali","subcategories":["Rice Pudding","Tajin"],"hidden":false,"image":"images/nav/rice-omali.webp","imageAlt":null},
+  {"id":"cookies","category":"Cookies","label":"Cookies","kicker":"Cookies","subcategories":["Cookies & Brownies"],"hidden":false,"image":"images/nav/cookies.webp","imageAlt":null},
+  {"id":"sandwiches","category":"Sandwiches","label":"Sandwiches","kicker":"Sandwiches","subcategories":["Sandwiches"],"hidden":false,"image":"images/nav/sandwiches.webp","imageAlt":null},
+  {"id":"soft-drinks","category":"Soft Drinks","label":"Soft Drinks","kicker":"Soft Drinks","subcategories":["Pepsi","Cola","Energy Drinks","Water"],"hidden":false,"image":"images/nav/soft-drinks.webp","imageAlt":null},
   /* The Coffee Bar replaces Frozen. Subcategories show as tabs; Blended Coffee is reserved and stays hidden until it has products. */
-  {"id":"coffee-bar","category":"The Coffee Bar","label":"The Coffee Bar","kicker":"The Coffee Bar","subcategories":["Hot Coffee","Iced Coffee","Smoothies","Tea","Specialty Hot Drinks","Mojitos","Blended Coffee"],"subtabs":true,"hidden":false,"image":null,"imageAlt":null}
+  {"id":"coffee-bar","category":"The Coffee Bar","label":"The Coffee Bar","kicker":"The Coffee Bar","subcategories":["Hot Coffee","Iced Coffee","Smoothies","Tea","Specialty Hot Drinks","Mojitos","Blended Coffee"],"subtabs":true,"hidden":false,"image":"images/nav/coffee-bar.webp","imageAlt":null}
 ];
 
 /* Flavor options. The base product gets one menu card; each option points at an
@@ -1421,9 +1422,9 @@ function categoryHTML(c, idx) {
   const items = products.filter(p => p.category === c.category && isListed(p));
   const kicker = c.kicker || c.label;
   const count = items.length ? items.length + (items.length === 1 ? ' item' : ' items') : '';
-  const bannerSrc = c.banner || c.image;
+  const bannerSrc = c.banner;
   const banner = bannerSrc
-    ? `<figure class="cat-banner reveal"><picture>${c.bannerMobile ? `<source media="(max-width:767px)" srcset="${c.bannerMobile}">` : ''}<img src="${bannerSrc}" alt="${esc((c.banner ? c.bannerAlt : c.imageAlt) || '')}" loading="lazy" decoding="async"></picture></figure>`
+    ? `<figure class="cat-banner reveal"><picture>${c.bannerMobile ? `<source media="(max-width:767px)" srcset="${c.bannerMobile}">` : ''}<img src="${bannerSrc}" alt="${esc(c.bannerAlt || '')}" loading="lazy" decoding="async"></picture></figure>`
     : '';
   const list = ps => `<div class="plist">${ps.map((p, i) => productCardHTML(p, { variant: 'row', idPrefix: 'qty-', index: i })).join('')}</div>`;
   // Categories with "subheads" show each subcategory under its own heading, in the subcategories order.
@@ -1457,16 +1458,18 @@ function renderMenu() {
   document.getElementById('best-list').innerHTML = best.map((p, i) => productCardHTML(p, { variant: 'tile', idPrefix: 'best-qty-', index: i, reveal: true })).join('');
   document.getElementById('bestsellers').hidden = !hasBest;
   document.querySelectorAll('.nav-links a[href="#bestsellers"]').forEach(a => { a.hidden = !hasBest; });
-  const bestLink = hasBest ? [{ id: 'bestsellers', label: 'Best Sellers' }] : [];
+  // Nav-chip photos are TEMPORARY (category "image" fields + this one); they're built by
+  // tools/make-image-sizes.js chips and can be replaced by swapping images/nav/<id>.webp.
+  const bestLink = hasBest ? [{ id: 'bestsellers', label: 'Best Sellers', image: 'images/nav/bestsellers.webp' }] : [];
   document.getElementById('menu-sections').innerHTML = visibleCategories.map(categoryHTML).join('');
   // Every visible category gets a chip — including empty ones (e.g. The Coffee Bar → "Coming Soon").
   const nav = bestLink.concat(visibleCategories);
   document.getElementById('catnav-track').innerHTML = nav.map(c => {
-    const ico = c.id === 'bestsellers'
-      ? `<span class="chip-ico chip-ico--mark">${iconSVG('bestsellers')}</span>`
-      : (c.image
-          ? `<span class="chip-ico" style="background-image:url('${c.image}')"></span>`
-          : '<span class="chip-ico chip-ico--placeholder"></span>');
+    const ico = c.image
+      ? `<span class="chip-ico" style="background-image:url('${c.image}')"></span>`
+      : c.id === 'bestsellers'
+        ? `<span class="chip-ico chip-ico--mark">${iconSVG('bestsellers')}</span>`
+        : '<span class="chip-ico chip-ico--placeholder"></span>';
     return `<a class="chip" href="#${c.id}">${ico}<span>${esc(c.label)}</span></a>`;
   }).join('');
   document.getElementById('sheet-links').innerHTML = bestLink.concat(visibleCategories).map(c => `<a href="#${c.id}">${iconSVG(c.id)}${esc(c.label)}</a>`).join('');
