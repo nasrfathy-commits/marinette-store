@@ -1487,6 +1487,8 @@ function subtabsHTML(c, groups, list) {
 }
 function selectSubtab(catId, i) {
   const sec = document.getElementById(catId);
+  const picked = document.getElementById(catId + '-tab-' + i);
+  if (picked.getAttribute('aria-selected') !== 'true') gaViewCategory(catId, 'subtab', picked.firstChild.textContent);
   sec.querySelectorAll('.subtab').forEach((t, k) => { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; });
   sec.querySelectorAll('.subpanel').forEach((p, k) => { p.hidden = k !== i; });
   const tab = document.getElementById(catId + '-tab-' + i);
@@ -1500,6 +1502,60 @@ function subtabKey(e, catId, i, n) {
   selectSubtab(catId, (i + k + n) % n).focus();
 }
 
+/* ---------- Google Analytics (GA4) events ----------
+   Catalog data only (ids, names, categories, flavors, prices, quantities). Never the
+   customer's name, phone, address, notes, order number or the WhatsApp message.
+   Page views come from the gtag config in <head>; nothing here sends page_view. */
+const GA_CURRENCY = 'EGP';
+function track(name, params) { if (typeof gtag === 'function') gtag('event', name, params); }
+function gaItem(p, qty) {
+  const f = flavorOf(p);
+  const it = { item_id: p.id, item_name: p.name, item_category: categoryLabel(p.category), quantity: qty };
+  if (p.subcategory) it.item_category2 = p.subcategory;
+  if (f) it.item_variant = f.flavor;          // flavors are their own ids; the variant names the flavor
+  if (isPriced(p)) it.price = p.price;
+  return it;
+}
+function gaCartItems() { return products.filter(p => cart[p.id] && isPriced(p)).map(p => gaItem(p, cart[p.id])); }
+function gaValue(items) { return items.reduce((s, it) => s + (it.price || 0) * it.quantity, 0); }
+// begin_checkout: once per cart, on the first touch of the checkout form or the Confirm button.
+let gaCheckoutStarted = false;
+function gaBeginCheckout() {
+  if (gaCheckoutStarted) return;
+  const items = gaCartItems();
+  if (!items.length) return;
+  gaCheckoutStarted = true;
+  track('begin_checkout', { currency: GA_CURRENCY, value: gaValue(items), items });
+}
+// whatsapp_click: an attempt to open WhatsApp with the order — not a confirmed purchase.
+function gaWhatsAppClick(method) {
+  const items = gaCartItems();
+  track('whatsapp_click', { currency: GA_CURRENCY, value: gaValue(items), item_count: items.reduce((n, it) => n + it.quantity, 0),
+    method, fulfillment_method: fulfillment, payment_type: paymentMethod || '' });
+}
+// view_category: deliberate picks only (chips, menu sheet, header, hero buttons, subtabs) — scroll-spy never sends it.
+let gaLastCategory = { key: '', at: 0 };
+function gaViewCategory(id, source, subcategory) {
+  const c = id === 'bestsellers' ? { label: 'Best Sellers' } : visibleCategories.find(x => x.id === id);
+  if (!c) return;
+  const key = id + '|' + (subcategory || '');
+  if (key === gaLastCategory.key && Date.now() - gaLastCategory.at < 1500) return; // double tap
+  gaLastCategory = { key, at: Date.now() };
+  const params = { category_id: id, category_name: c.label, source };
+  if (subcategory) params.subcategory = subcategory;
+  track('view_category', params);
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const source = a.closest('#catnav') ? 'category_bar' : a.closest('#sheet-links') ? 'menu_sheet'
+    : a.closest('.nav-links') ? 'header' : a.closest('.hero') ? 'hero' : 'link';
+  gaViewCategory(a.getAttribute('href').slice(1), source);
+});
+document.getElementById('cart-drawer').addEventListener('focusin', e => {
+  if (e.target.closest('.form-grid, .fulfillment, .pay-select, .send-btn')) gaBeginCheckout();
+});
+
 function changeQty(id, delta) {
   // Only real, priced products can enter the cart (blocks unpriced items
   // and unknown ids from every entry point: cards, detail sheet, console).
@@ -1511,11 +1567,9 @@ function changeQty(id, delta) {
     delete cart[id];
   } else {
     cart[id] = next;
-    if (typeof gtag === 'function') {
-      gtag('event', 'add_to_cart', {
-        item_id: id,
-        quantity: next
-      });
+    if (delta > 0) {
+      const p = products.find(x => x.id === id);
+      track('add_to_cart', { currency: GA_CURRENCY, value: p.price * delta, items: [gaItem(p, delta)] });
     }
   }
   renderCart();
@@ -1529,6 +1583,7 @@ function setQtyDisplays(id, qty) {
 }
 
 function renderCart() {
+  if (!Object.keys(cart).length) gaCheckoutStarted = false; // the next cart is a new checkout
   let count = 0;
   let total = 0;
   const container = document.getElementById('cart-items');
@@ -1806,8 +1861,12 @@ function confirmOrderSent() {
 }
 function retryWhatsApp(e) {
   // The link opens WhatsApp itself (works even where pop-ups are blocked); ignore rapid repeat taps.
+  // Kept from reaching document listeners: GA's automatic outbound-click tracking would
+  // otherwise send this href, i.e. the whole order message with the customer's name and phone.
+  e.stopPropagation();
   if (Date.now() - lastWhatsAppOpen < 2500) { e.preventDefault(); return false; }
   lastWhatsAppOpen = Date.now();
+  gaWhatsAppClick('link');
   return true;
 }
 
@@ -1820,6 +1879,7 @@ function sendOrder() {
     alert('Your cart is empty. Please add some items first.');
     return;
   }
+  gaBeginCheckout();
   const name = cleanText(document.getElementById('customer-name').value, 60);
   const phone = normalizeEgMobile(document.getElementById('customer-phone').value);
   const address = cleanText(document.getElementById('customer-address').value, 120);
@@ -1852,14 +1912,6 @@ function sendOrder() {
   }
   saveCart();
   const when = cairoDateTime(pendingOrder.at);
-
-  if (typeof gtag === 'function') {
-    gtag('event', 'purchase_click', {
-      event_category: 'order',
-      event_label: 'whatsapp_order',
-      fulfillment_method: fulfillment
-    });
-  }
 
   // Plain '\n' newlines + a single encodeURIComponent at the end: raw newlines
   // are stripped from URLs, and unencoded &, # or + in names/notes truncate it.
@@ -1902,6 +1954,7 @@ function sendOrder() {
   const url = orderWhatsAppUrl(message);
   checkoutBusy = true;                       // lock before anything can run twice
   setSendBusy(true);
+  gaWhatsAppClick('auto');
   let win = null;
   try { win = window.open(url, '_blank'); } catch (e) { win = null; }
   lastWhatsAppOpen = Date.now();
@@ -2029,6 +2082,10 @@ function pdShow(p) {
 function openProduct(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
+  const sheet = document.getElementById('pdetail');
+  if (!(sheet.classList.contains('open') && pdId === id)) {   // one view_item per real opening
+    track('view_item', Object.assign({ currency: GA_CURRENCY, items: [gaItem(p, 1)] }, isPriced(p) ? { value: p.price } : {}));
+  }
   pdId = id; pdQty = 1;
   const set = optionsOf(p);
   const media = document.getElementById('pd-media');
