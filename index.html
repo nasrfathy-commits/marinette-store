@@ -999,6 +999,7 @@ html.menu-only .bottom-nav{grid-template-columns:repeat(3,1fr)}
     <div class="pd-media" id="pd-media"></div>
     <div class="pd-info">
       <h2 class="pd-title" id="pd-title"></h2>
+      <p class="pd-ar" id="pd-ar" hidden><bdi lang="ar" id="pd-ar-text"></bdi></p>
       <div class="pd-ingredients" id="pd-ingredients" hidden>
         <p class="pd-ing-label">Ingredients</p>
         <p class="pd-ing-list" id="pd-ing-list"></p>
@@ -1227,6 +1228,9 @@ const products = [
   {"id":"tuna","name":"Tuna","price":115,"category":"Sandwiches","subcategory":"Sandwiches","description":null,"image":"images/products/tuna.webp","featured":null,"meta":null},
   {"id":"brown-toast-cold-roast-beef","name":"Brown Toast Cold Roast Beef","price":100,"category":"Sandwiches","subcategory":"Sandwiches","description":null,"image":"images/products/brown-toast-cold-roast-beef.webp","detailImage":"images/products/brown-toast-cold-roast-beef-open.webp","featured":null,"meta":null},
   {"id":"brown-toast-cold-turkey","name":"Brown Toast Cold Turkey","price":110,"category":"Sandwiches","subcategory":"Sandwiches","description":null,"image":"images/products/brown-toast-cold-turkey.webp","detailImage":"images/products/brown-toast-cold-turkey-open.webp","featured":null,"meta":null},
+  {"id":"sambousek-grilled-chicken-mix","name":"Sambousek & Grilled Chicken Mix","nameAr":"ميكس سمبوسك وفراخ مشوية","price":185,"category":"Egyptian Meals","subcategory":"Egyptian Meals","description":"Mini sambousek served with grilled chicken in a takeaway meal box.","image":"images/products/egyptian-meals/sambousek-grilled-chicken.png","featured":null,"meta":null},
+  {"id":"hawawshi-grilled-chicken-mix","name":"Hawawshi & Grilled Chicken Mix","nameAr":"ميكس حواوشي وفراخ مشوية","price":185,"category":"Egyptian Meals","subcategory":"Egyptian Meals","description":"Mini Egyptian hawawshi served with grilled chicken in a takeaway meal box.","image":"images/products/egyptian-meals/hawawshi-grilled-chicken.png","featured":null,"meta":null},
+  {"id":"roqaq-sambousek-mix","name":"Roqaq & Sambousek Mix","nameAr":"ميكس رقاق وسمبوسك","price":185,"category":"Egyptian Meals","subcategory":"Egyptian Meals","description":"Rolled Egyptian roqaq served with mini sambousek in a takeaway meal box.","image":"images/products/egyptian-meals/roqaq-sambousek.png","featured":null,"meta":null},
   {"id":"creme-brulee","name":"Crème Brûlée","price":95,"category":"Pâtisserie","subcategory":null,"description":null,"image":"images/products/creme-brulee.webp","featured":null,"meta":null},
   {"id":"plain-om-ali","name":"Plain Om Ali","price":55,"category":"Rice & Om Ali","subcategory":"Tajin","description":null,"image":"images/products/plain-om-ali.webp","featured":null,"meta":null},
   {"id":"mixed-nuts-om-ali","name":"Mixed Nuts Om Ali","price":60,"category":"Rice & Om Ali","subcategory":"Tajin","description":null,"image":"images/products/mixed-nuts-om-ali.webp","featured":null,"meta":null},
@@ -1301,6 +1305,7 @@ const categories = [
   {"id":"rice-omali","category":"Rice & Om Ali","label":"Rice & Om Ali","kicker":"Rice & Om Ali","subcategories":["Rice Pudding","Tajin"],"hidden":false,"image":"images/nav/rice-omali.webp","imageAlt":null},
   {"id":"cookies","category":"Cookies","label":"Cookies","kicker":"Cookies","subcategories":["Cookies & Brownies"],"hidden":false,"image":"images/nav/cookies.webp","imageAlt":null},
   {"id":"sandwiches","category":"Sandwiches","label":"Sandwiches","kicker":"Sandwiches","subcategories":["Sandwiches"],"hidden":false,"image":"images/nav/sandwiches.webp","imageAlt":null},
+  {"id":"egyptian-meals","category":"Egyptian Meals","label":"Egyptian Meals","kicker":"Egyptian Meals","subcategories":["Egyptian Meals"],"hidden":false,"image":null,"imageAlt":null},
   {"id":"soft-drinks","category":"Soft Drinks","label":"Soft Drinks","kicker":"Soft Drinks","subcategories":["Pepsi","Cola","Energy Drinks","Water"],"hidden":false,"image":"images/nav/soft-drinks.webp","imageAlt":null},
   /* The Coffee Bar replaces Frozen. Subcategories show as tabs; Blended Coffee is reserved and stays hidden until it has products. */
   {"id":"coffee-bar","category":"The Coffee Bar","label":"The Coffee Bar","kicker":"The Coffee Bar","subcategories":["Hot Coffee","Iced Coffee","Smoothies","Tea","Specialty Hot Drinks","Mojitos","Blended Coffee"],"subtabs":true,"hidden":false,"image":"images/nav/coffee-bar.webp","imageAlt":null}
@@ -1355,6 +1360,7 @@ const ICONS = {
   'rice-omali': '<path d="M4 11.500h16a8 8 0 0 1-16 0z"/><path d="M9 8c0-1.400 1.200-1.600 1.200-3M14 8c0-1.400 1.200-1.600 1.200-3"/>',
   cookies: '<circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r=".6"/><circle cx="14.500" cy="9.500" r=".6"/><circle cx="12" cy="14.500" r=".6"/><circle cx="16" cy="14" r=".6"/><circle cx="8.500" cy="14" r=".6"/>',
   sandwiches: '<path d="M4 10.500a8 5 0 0 1 16 0z"/><path d="M4 13.500c2 1.600 3 1.600 5 0s3-1.600 5 0 3 1.600 6 0"/><path d="M5 16.500h14v.5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>',
+  'egyptian-meals': '<path d="M4 10h16l-1.500 9h-13z"/><path d="M3.500 10l2-4.500h13l2 4.500"/><path d="M9.500 14h5"/>',
   'cake-slices': '<path d="M4 19V11.5L20 8v11z"/><path d="M4 15.2l16-3.5"/>',
   'soft-drinks':'<path d="M7 4h10l-1 16H8z"/><path d="M7.500 9h9"/>',
   'coffee-bar': '<path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10.500h1.500a2.500 2.500 0 0 1 0 5H16"/><path d="M8.500 3.500c0 1.200 1 1.300 1 2.500M12 3.500c0 1.200 1 1.300 1 2.500"/>'
@@ -1444,6 +1450,7 @@ function productCardHTML(p, opts) {
       <div class="pcard-body">
         <div class="pcard-text" data-detail>
           <h3 class="pcard-title"><button class="pcard-open" type="button" data-detail>${esc(title)}</button></h3>
+          ${p.nameAr ? `<p class="pcard-ar"><bdi lang="ar">${esc(p.nameAr)}</bdi></p>` : ''}
           ${fc ? `<p class="pcard-flavors"><span class="pcard-dots" aria-hidden="true">${fc.swatches.map(c => `<i style="background:${c}"></i>`).join('')}</span>${fc.count} Flavors Available</p>` : ''}
           ${ingredientsText(p) ? `<p class="pcard-ing">${esc(ingredientsText(p))}</p>` : ''}
           ${p.description ? `<p class="pcard-desc">${esc(p.description)}</p>` : ''}
@@ -2118,6 +2125,7 @@ function pdRefresh() {
 /* Fills the sheet's text for product p (shared by openProduct and flavor changes). */
 function pdShow(p) {
   document.getElementById('pd-title').textContent = p.name;
+  document.getElementById('pd-ar-text').textContent = p.nameAr || ''; document.getElementById('pd-ar').hidden = !p.nameAr;
   const d = document.getElementById('pd-desc'); d.textContent = p.description || ''; d.hidden = !p.description;
   const m = document.getElementById('pd-meta'); m.textContent = p.meta || ''; m.hidden = !p.meta;
   document.getElementById('pd-price').textContent = priceText(p);
@@ -2239,7 +2247,7 @@ function runSearch(raw) {
   if (!q) { browse.hidden = false; res.hidden = true; res.innerHTML = ''; return; }
   const hidden = new Set(categories.filter(c => c.hidden).map(c => c.category));
   // A matching flavor variant surfaces its base product's card (e.g. "pistachio" → the cheesecake card).
-  const hits = [...new Set(products.filter(p => !hidden.has(p.category) && [p.name, categoryLabel(p.category), p.subcategory || '', p.meta || '', p.description || ''].some(s => fold(s).includes(q))).map(baseOf))];
+  const hits = [...new Set(products.filter(p => !hidden.has(p.category) && [p.name, p.nameAr || '', categoryLabel(p.category), p.subcategory || '', p.meta || '', p.description || ''].some(s => fold(s).includes(q))).map(baseOf))];
   browse.hidden = true; res.hidden = false;
   res.innerHTML = `<div class="results-head"><h2>Search</h2><p>${hits.length} result${hits.length === 1 ? '' : 's'} for “${esc(raw.trim())}”</p></div>` +
     (hits.length ? `<div class="plist">${hits.map(p => productCardHTML(p, { variant: 'row' })).join('')}</div>` : '<p class="no-results">No matching items.</p>');
